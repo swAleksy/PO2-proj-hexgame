@@ -1,5 +1,5 @@
 import pygame, math
-from bpb import colors
+from .bpb import colors
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self):

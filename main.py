@@ -1,6 +1,6 @@
 import pygame, sys, random
-from Layout import *
-from bpb import LAYOUT_POINTY, colors
+from hexgrid.Layout import *
+from hexgrid.bpb import Point, LAYOUT_POINTY
 
 pygame.init()
 w ,h = 1300, 1000
@@ -14,7 +14,6 @@ clock = pygame.time.Clock()
 layout = Layout(LAYOUT_POINTY, Point(hexagon_size, hexagon_size), Point(w // 2, h // 2), screen)
 layout.set_hexagonal_map(radius_of_hex_map)
 layout.set_infobox(w,h)
-
 
 running = True
 while running:

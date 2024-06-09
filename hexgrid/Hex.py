@@ -1,4 +1,4 @@
-from bpb import Point, colors
+from .bpb import Point, colors
 import pygame
 
 class Hex:
@@ -77,6 +77,7 @@ class City(Hex):
         self.resources = 10
         self.is_destroyed = False
         self.border_color = colors["RED"]
+        self.city_name = "test"
 
     def draw_sprite(self, screen):
         screen.blit(self.city_sprite.image, self.city_sprite.rect)

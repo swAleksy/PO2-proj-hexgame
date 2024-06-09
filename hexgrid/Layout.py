@@ -1,14 +1,16 @@
-import pygame, sys, math
-from bpb import Point
-from Hex import *
-from Sprite import *
-import random
+import pygame, math, random
+from .bpb import Point
+from .Hex import *
+from .Sprite import *
+from .Infobox import *
 
 class Layout:
-    def __init__(self, orientation, size, origin) -> None:
+    def __init__(self, orientation, size, origin, screen) -> None:
         self.orientation = orientation
         self.size = size
         self.origin = origin
+        self.infobox = None
+        self.screen = screen
         self.map_data = {}
         
     def set_hexagonal_map(self, N):
@@ -29,31 +31,33 @@ class Layout:
 
         self.map_data = set(hex_map)
         
-    def draw_hexagonal_map(self, screen, N: int) -> None:
+    def draw_hexagonal_map(self, N: int) -> None:
         for hex in self.map_data:
-            self.draw_hex(screen, hex)
+            self.draw_hex(self.screen, hex)
 
-    def redraw_hexagonal_map(self, screen, N: int) -> None:
+    def redraw_hexagonal_map(self, N: int) -> None:
         buff = []
         for hex in self.map_data:   
             if isinstance(hex, City):
                 buff.append(hex)
             else:
-                self.draw_hex(screen, hex)
+                self.draw_hex(hex)
         
         for hex in buff:
-            self.draw_hex(screen, hex)
-            hex.draw_sprite(screen)
+            self.draw_hex( hex)
+            hex.draw_sprite(self.screen)
 
-    def draw_hex(self, screen, h):
+    def draw_hex(self, h):
         corners = polygon_corners(self, h)
         point_list = [(p.x, p.y) for p in corners]
-        pygame.draw.polygon(screen, h.color, point_list, 0)
+        pygame.draw.polygon(self.screen, h.color, point_list, 0)
         if (isinstance(h, City)):
-            pygame.draw.polygon(screen, h.border_color, point_list, 3)
+            pygame.draw.polygon(self.screen, h.border_color, point_list, 3)
         else:
-            pygame.draw.polygon(screen, (0,0,0), point_list, 1)
+            pygame.draw.polygon(self.screen, (0,0,0), point_list, 1)
 
+    def set_infobox(self,window_x, window_y):
+        self.infobox = Infobox(self.screen, window_x, window_y)
 # def hexagonal_map_draw(screen: pygame.Surface, layout: Layout, N: int) -> None:
 #     for hex in layout.map_data:
 #         draw_hex(screen, layout, hex)
