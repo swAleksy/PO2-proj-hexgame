@@ -74,6 +74,7 @@ class City(Hex):
         self.money = 100
         self.resources = 10
         self.is_destroyed = False
+        self.border_color = colors["RED"]
 
     def draw_sprite(self, screen):
         screen.blit(self.city_sprite.image, self.city_sprite.rect)

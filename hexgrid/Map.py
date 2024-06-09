@@ -12,12 +12,12 @@ radius_of_hex_map = 7
 clock = pygame.time.Clock()
 
 layout = Layout(LAYOUT_POINTY, Point(hexagon_size, hexagon_size), Point(w // 2, h // 2))
-#map_data = set_hexagonal_map(radius_of_hex_map, layout)
 layout.set_hexagonal_map(radius_of_hex_map)
+
 running = True
 while running:
     screen.fill((colors["BROWN"]))
-    hexagonal_map_redraw(screen, layout, radius_of_hex_map, layout.map_data)
+    layout.redraw_hexagonal_map(screen, radius_of_hex_map)
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONUP:

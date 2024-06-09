@@ -12,71 +12,64 @@ class Layout:
         self.map_data = {}
         
     def set_hexagonal_map(self, N):
-        hex_map = set()
-
+        hex_map = []
         for q in range(-N, N + 1):
             r1 = max(-N, -q - N)
             r2 = min(N, -q + N)
-            for r in range(r1, r2 + 1):
+            for r in range(r1, r2 + 1):          
                 h = Hex(q, r, -q - r)
-                h.set_hex_center(hex_to_pixel(layout, h))
-                if r == 0 and q == 0:
-                    h = City(q, r, -q-r, SpriteCity(h.center))
-                hex_map.add(h)
-        
-        self.map_data = hex_map
-        
-    def draw_hexagonal_map(self, screen: pygame.Surface, N: int) -> None:
+                h.set_hex_center(hex_to_pixel(self, h))
+                hex_map.append(h)
 
+        random_index = random.randint(0, len(hex_map) - 1)
+        city_hex = hex_map[random_index]
+        city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center))
+        city.border_color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
+
+        hex_map[random_index] = city
+
+        self.map_data = set(hex_map)
+        
+    def draw_hexagonal_map(self, screen, N: int) -> None:
         for hex in self.map_data:
-
             self.draw_hex(screen, hex)
 
-
-    def redraw_hexagonal_map(self, screen: pygame.Surface, N: int) -> None:
-
-        for hex in self.map_data:
-
-            self.draw_hex(screen, hex)
-
+    def redraw_hexagonal_map(self, screen, N: int) -> None:
+        buff = []
+        for hex in self.map_data:   
             if isinstance(hex, City):
-
-                hex.draw_sprite(screen)
-
-# def hexagonal_map_draw(screen, layout, N):
-#     for q in range(-N, N + 1):
-#         for r in range(-N, N + 1):       
-#             if -N <= -q - r <= N:  
-#                 draw_hex(screen, layout, Hex(q, r, -q - r))
-
-# def hexagonal_map_redraw(screen, layout, N, hex_map):
-#     for h in hex_map:
-#         draw_hex(screen, layout, h)
-#         if isinstance(h, City):
-#             h.draw_sprite(screen)
-
-def hexagonal_map_draw(screen: pygame.Surface, layout: Layout, N: int) -> None:
-
-    for hex in layout.map_data:
-
-        draw_hex(screen, layout, hex)
-
-
-def hexagonal_map_redraw(screen: pygame.Surface, layout: Layout, N: int, map_data: set) -> None:
-
-    for hex in map_data:
-
-        draw_hex(screen, layout, hex)
-
-        if isinstance(hex, City):
-
+                buff.append(hex)
+            else:
+                self.draw_hex(screen, hex)
+        
+        for hex in buff:
+            self.draw_hex(screen, hex)
             hex.draw_sprite(screen)
 
-def draw_hex(screen, layout, h):
-    corners = polygon_corners(layout, h)
-    point_list = [(p.x, p.y) for p in corners]
-    pygame.draw.polygon(screen, h.color, point_list, 0)
-    pygame.draw.polygon(screen, (0,0,0), point_list, 1)
+    def draw_hex(self, screen, h):
+        corners = polygon_corners(self, h)
+        point_list = [(p.x, p.y) for p in corners]
+        pygame.draw.polygon(screen, h.color, point_list, 0)
+        if (isinstance(h, City)):
+            pygame.draw.polygon(screen, h.border_color, point_list, 3)
+        else:
+            pygame.draw.polygon(screen, (0,0,0), point_list, 1)
+
+# def hexagonal_map_draw(screen: pygame.Surface, layout: Layout, N: int) -> None:
+#     for hex in layout.map_data:
+#         draw_hex(screen, layout, hex)
+
+# def hexagonal_map_redraw(screen: pygame.Surface, layout: Layout, N: int, map_data: set) -> None:
+#     for hex in map_data:
+#         draw_hex(screen, layout, hex)
+#         if isinstance(hex, City):
+#             hex.draw_sprite(screen)
+
+# def draw_hex(screen, layout, h):
+#     corners = polygon_corners(layout, h)
+#     point_list = [(p.x, p.y) for p in corners]
+#     pygame.draw.polygon(screen, h.color, point_list, 0)
+#     pygame.draw.polygon(screen, (0,0,0), point_list, 1)
 
 def hex_to_pixel(layout, h):
     M = layout.orientation
