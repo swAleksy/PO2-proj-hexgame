@@ -24,7 +24,6 @@ class Layout:
         random_index = random.randint(0, len(hex_map) - 1)
         city_hex = hex_map[random_index]
         city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center))
-        city.border_color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
 
         hex_map[random_index] = city
 

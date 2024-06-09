@@ -71,6 +71,8 @@ class City(Hex):
     def __init__(self, q, r, s, city_sprite) -> None:
         super().__init__(q, r, s)
         self.city_sprite = city_sprite
+        self.max_hp = 100
+        self.hp = 50
         self.money = 100
         self.resources = 10
         self.is_destroyed = False
@@ -78,7 +80,7 @@ class City(Hex):
 
     def draw_sprite(self, screen):
         screen.blit(self.city_sprite.image, self.city_sprite.rect)
-
+        self.city_sprite.draw_health_bar(screen, self.max_hp, self.hp)
 
 
 #             _____
