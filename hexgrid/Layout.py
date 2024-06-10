@@ -1,8 +1,9 @@
 import pygame, math, random
-from .bpb import Point
+from .bpb import Point, countires
 from .Hex import *
-from .Sprite import *
+from .Sprite import SpriteCity
 from .Infobox import *
+from game.Player import Player
 
 class Layout:
     def __init__(self, orientation, size, origin, screen) -> None:
@@ -11,6 +12,7 @@ class Layout:
         self.origin = origin
         self.infobox = None
         self.screen = screen
+        self.map_array = None
         self.map_data = {}
         
     def set_hexagonal_map(self, N):
@@ -23,14 +25,23 @@ class Layout:
                 h.set_hex_center(hex_to_pixel(self, h))
                 hex_map.append(h)
 
-        random_index = random.randint(0, len(hex_map) - 1)
-        city_hex = hex_map[random_index]
-        city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center))
+        self.map_array = hex_map
 
-        hex_map[random_index] = city
-
-        self.map_data = set(hex_map)
+    def add_city_to_hexagonal_map(self, is_player):
+        while True:
+            random_index = random.randint(0, len(self.map_array) - 1)
+            city_hex = self.map_array[random_index]
+            if not isinstance(city_hex, City):
+                random_nation = random.choice(countires)
+                city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center),random_nation[1],random_nation[2])
+                self.map_array[random_index] = city
+                player = Player(random_nation[0], self.map_array[random_index], is_player)
+                countires.remove(random_nation) 
+                break
         
+        self.map_data = set(self.map_array)
+        return player
+
     def draw_hexagonal_map(self, N: int) -> None:
         for hex in self.map_data:
             self.draw_hex(self.screen, hex)
@@ -45,7 +56,7 @@ class Layout:
         
         for hex in buff:
             self.draw_hex( hex)
-            hex.draw_sprite(self.screen)
+            hex.draw_city(self.screen)
 
     def draw_hex(self, h):
         corners = polygon_corners(self, h)
@@ -56,23 +67,8 @@ class Layout:
         else:
             pygame.draw.polygon(self.screen, (0,0,0), point_list, 1)
 
-    def set_infobox(self,window_x, window_y):
-        self.infobox = Infobox(self.screen, window_x, window_y)
-# def hexagonal_map_draw(screen: pygame.Surface, layout: Layout, N: int) -> None:
-#     for hex in layout.map_data:
-#         draw_hex(screen, layout, hex)
-
-# def hexagonal_map_redraw(screen: pygame.Surface, layout: Layout, N: int, map_data: set) -> None:
-#     for hex in map_data:
-#         draw_hex(screen, layout, hex)
-#         if isinstance(hex, City):
-#             hex.draw_sprite(screen)
-
-# def draw_hex(screen, layout, h):
-#     corners = polygon_corners(layout, h)
-#     point_list = [(p.x, p.y) for p in corners]
-#     pygame.draw.polygon(screen, h.color, point_list, 0)
-#     pygame.draw.polygon(screen, (0,0,0), point_list, 1)
+    def set_city_infobox(self,window_x, window_y):
+        self.infobox = CityInfoBox(self.screen, window_x, window_y)
 
 def hex_to_pixel(layout, h):
     M = layout.orientation

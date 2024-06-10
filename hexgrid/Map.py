@@ -1,6 +1,6 @@
 import pygame, sys, random
 from Layout import *
-from bpb import LAYOUT_POINTY, colors
+from bpb import LAYOUT_POINTY, colors, Point
 
 pygame.init()
 w ,h = 1300, 1000

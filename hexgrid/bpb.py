@@ -18,11 +18,21 @@ colors = {
     "RED": (217, 28, 44),
     "GREEN": (36, 133, 57),
     "BGREEN": (170, 255, 0),
+    "DBLUE": (45, 48, 86),
     "WHITE": (255, 255, 255),
     "GREY": (128, 128, 128),
     "BROWN": (64, 43, 39),
     "SANDISH": (194, 178, 128),
 }
+
+countires = [
+    ["Poland", "Kraków", (229, 117, 116)],
+    ["Sweden", "Stockholm", (116, 163, 243)],
+    ["England", "London", (202, 20, 21)],
+    ["Germany", "Berlin", (32, 32, 32)],
+    ["France", "Paris", (249, 249, 249)],
+    ["Italy", "Rome", (97, 191, 34)]
+]
 
 LAYOUT_POINTY = Orientation(math.sqrt(3.0), math.sqrt(3.0)/2.0, 0.0, 3.0/2.0, 
                             math.sqrt(3.0)/3.0, -1.0/3.0, 0.0, 2.0/3.0, 
