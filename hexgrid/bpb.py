@@ -30,7 +30,7 @@ COUNTRIES = [
     ["Sweden", "Stockholm", (116, 163, 243)],
     ["England", "London", (202, 20, 21)],
     ["Germany", "Berlin", (32, 32, 32)],
-    ["France", "Paris", (249, 249, 249)],
+    ["France", "Paris", ( 4, 2, 115)],
     ["Italy", "Rome", (97, 191, 34)]
 ]
 

@@ -54,7 +54,8 @@ class Layout:
                 buff.append(hex)
             else:
                 self.draw_hex(hex)
-                # hex.unit.draw_unit_sprite(self.screen)
+                if isinstance(hex.unit, Unit):
+                    hex.unit.draw_unit(self.screen)
         
         for hex in buff:
             self.draw_hex( hex)

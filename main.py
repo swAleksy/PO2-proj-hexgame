@@ -2,6 +2,7 @@ import pygame, sys, random
 from hexgrid.Layout import *
 from hexgrid.bpb import Point, LAYOUT_POINTY
 from game.Player import Player
+from game.Unit import Unit
 
 pygame.init()
 
@@ -21,16 +22,27 @@ layout.set_city_infobox(w,h)
 
 
 running = True
+unit_move_mode = 0
 while running:
     screen.fill((colors["DBLUE"]))
     layout.redraw_hexagonal_map(radius_of_hex_map)
     layout.infobox.draw_city_infobox()
+
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONUP:
-            pos = pygame.mouse.get_pos()
-            h = mouse_click_return_hex(pos, layout, layout.map_data)
-            if h:
-                h.switch_color(colors["GREEN"])
+            if unit_move_mode == 0:  
+                pos = pygame.mouse.get_pos()
+                h = mouse_click_return_hex(pos, layout, layout.map_data)
+
+                if isinstance(h.unit, Unit):
+                    unit_move_mode = 1
+                    
+            elif unit_move_mode == 1:
+                where_to = pygame.mouse.get_pos()
+                dest_hex = mouse_click_return_hex(where_to, layout, layout.map_data)
+                print(dest_hex.center)
+                h.unit.move_to(dest_hex)  
+                unit_move_mode = 0  # Reset mode after the move
 
         if event.type == pygame.QUIT:
             running = False

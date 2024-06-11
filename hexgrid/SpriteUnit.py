@@ -17,7 +17,6 @@ class SpriteUnit(pygame.sprite.Sprite):
         filled_surface = pygame.Surface(self.image.get_size(), pygame.SRCALPHA)
         
         filled_surface.fill(color) 
-        
         filled_surface.blit(self.image, (0, 0))
         
         screen.blit(filled_surface, self.rect_for_sprite.topleft)

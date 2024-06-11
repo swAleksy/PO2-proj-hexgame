@@ -6,11 +6,11 @@ class Unit(pygame.sprite.Sprite):
         super().__init__()
         self.owner = owner
         self.position = position
+        self.img_path = image_path
         self.sprite = SpriteUnit(self.position, image_path)
 
-    def move_to(self, new_position):
-        self.position = new_position
-        self.rect.center = (new_position.center.x, new_position.center.y)
+    def move_to(self, new_hex):
+        new_hex.add_unit(Unit(self.owner, new_hex.center, self.img_path ))
 
     def draw_unit(self, screen):
         self.sprite.draw_unit_sprite(screen, self.owner.color)
