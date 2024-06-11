@@ -1,8 +1,9 @@
 import pygame, math, random
-from .bpb import Point, countires
+from .bpb import Point, COUNTRIES, INF_UNIT_PATH
 from .Hex import *
-from .Sprite import SpriteCity
+from .SpriteCity import SpriteCity
 from .Infobox import *
+from game.Unit import Unit
 from game.Player import Player
 
 class Layout:
@@ -32,11 +33,11 @@ class Layout:
             random_index = random.randint(0, len(self.map_array) - 1)
             city_hex = self.map_array[random_index]
             if not isinstance(city_hex, City):
-                random_nation = random.choice(countires)
-                city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center),random_nation[1],random_nation[2])
+                random_nation = random.choice(COUNTRIES)
+                player = Player(random_nation[0], self.map_array[random_index],random_nation[2], is_player)
+                city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center),random_nation[1],random_nation[2], Unit(player ,city_hex.center, INF_UNIT_PATH))
                 self.map_array[random_index] = city
-                player = Player(random_nation[0], self.map_array[random_index], is_player)
-                countires.remove(random_nation) 
+                COUNTRIES.remove(random_nation) 
                 break
         
         self.map_data = set(self.map_array)
@@ -53,10 +54,12 @@ class Layout:
                 buff.append(hex)
             else:
                 self.draw_hex(hex)
+                # hex.unit.draw_unit_sprite(self.screen)
         
         for hex in buff:
             self.draw_hex( hex)
             hex.draw_city(self.screen)
+            hex.unit.draw_unit(self.screen)
 
     def draw_hex(self, h):
         corners = polygon_corners(self, h)

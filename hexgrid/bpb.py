@@ -25,7 +25,7 @@ colors = {
     "SANDISH": (194, 178, 128),
 }
 
-countires = [
+COUNTRIES = [
     ["Poland", "Kraków", (229, 117, 116)],
     ["Sweden", "Stockholm", (116, 163, 243)],
     ["England", "London", (202, 20, 21)],
@@ -41,3 +41,6 @@ LAYOUT_POINTY = Orientation(math.sqrt(3.0), math.sqrt(3.0)/2.0, 0.0, 3.0/2.0,
 LAYOUT_FLAT = Orientation(3.0/2.0, 0.0, math.sqrt(3.0)/2.0, math.sqrt(3.0), 
                            2.0/3.0, 0.0, -1.0/3.0, math.sqrt(3.0)/3.0, 
                            0.0)
+
+INF_UNIT_PATH = "./assets/inf.png"
+ARC_UNIT_PATH = "./assets/arc.png"

@@ -20,6 +20,8 @@ class Hex:
         self.center = None
         self.color = colors["SANDISH"]
 
+        self.unit = None
+
     def hex_add(self, other):
         return Hex(self._q + other._q, self._r + other._r, self._s + other._s)
 
@@ -38,6 +40,12 @@ class Hex:
 
     def switch_color(self, col):
         self.color = col
+
+    def add_unit(self, unit):
+        self.unit = unit
+
+    def remove_unit(self):
+        self.unit = None
 
     def __eq__(self, other) -> bool:
         if isinstance(other, Hex):
@@ -68,7 +76,7 @@ def hex_round(h):
 
 
 class City(Hex):
-    def __init__(self, q, r, s, city_sprite,city_name, color) -> None:
+    def __init__(self, q, r, s, city_sprite,city_name, color, unit) -> None:
         super().__init__(q, r, s)
         self.city_sprite = city_sprite
         self.border_color = color
@@ -79,12 +87,17 @@ class City(Hex):
         self.money = 100
         self.resources = 10
 
+        self.add_unit(unit)
+
         self.is_destroyed = False
 
 
     def draw_city(self, screen):
         self.city_sprite.draw_city(screen)
         self.city_sprite.draw_city_info(screen, self.max_hp, self.hp, self.city_name)
+
+    def deploy_unit(self, screen):
+        pass
 
 
 #             _____

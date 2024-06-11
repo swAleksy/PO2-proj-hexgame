@@ -7,6 +7,7 @@ pygame.init()
 
 w ,h = 1300, 1000
 screen = pygame.display.set_mode((w, h))
+pygame.display.set_caption("Sedecjasz Major's Cywilizacja VII")
 hexagon_size = 40
 radius_of_hex_map = 7
 

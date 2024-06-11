@@ -1,9 +1,10 @@
 import random
 
 class Player:
-    def __init__(self, name, city, is_player) -> None:
+    def __init__(self, name, city, color, is_player) -> None:
         self.name = name
         self.city = city
+        self.color = color
         self.units = []
         self.is_player = is_player
         
