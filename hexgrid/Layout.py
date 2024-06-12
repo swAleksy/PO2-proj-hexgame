@@ -36,12 +36,16 @@ class Layout:
                 random_nation = random.choice(COUNTRIES)
                 player = Player(random_nation[0], self.map_array[random_index],random_nation[2], is_player)
                 city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center),random_nation[1],random_nation[2], Unit(player ,city_hex.center, INF_UNIT_PATH))
+                city.set_hex_center(hex_to_pixel(self, city))
                 self.map_array[random_index] = city
                 COUNTRIES.remove(random_nation) 
                 break
         
         self.map_data = set(self.map_array)
         return player
+    
+    def add_wonders_to_hexagonal_map(self):
+        pass
 
     def draw_hexagonal_map(self, N: int) -> None:
         for hex in self.map_data:
@@ -60,7 +64,8 @@ class Layout:
         for hex in buff:
             self.draw_hex( hex)
             hex.draw_city(self.screen)
-            hex.unit.draw_unit(self.screen)
+            if isinstance(hex.unit, Unit):
+                hex.unit.draw_unit(self.screen)
 
     def draw_hex(self, h):
         corners = polygon_corners(self, h)
@@ -68,8 +73,8 @@ class Layout:
         pygame.draw.polygon(self.screen, h.color, point_list, 0)
         if (isinstance(h, City)):
             pygame.draw.polygon(self.screen, h.border_color, point_list, 3)
-        else:
-            pygame.draw.polygon(self.screen, (0,0,0), point_list, 1)
+        else: 
+            pygame.draw.polygon(self.screen, h.border_color, point_list, 1)
 
     def set_city_infobox(self,window_x, window_y):
         self.infobox = CityInfoBox(self.screen, window_x, window_y)

@@ -25,6 +25,12 @@ colors = {
     "SANDISH": (194, 178, 128),
 }
 
+WONDERS = [
+    ["Petra", "./assets/won_pet.png"],
+    ["Colosus", "./assets/won_col.png"],
+    ["Pyramids", "./assets/won_pyr.png"]
+]
+
 COUNTRIES = [
     ["Poland", "Kraków", (229, 117, 116)],
     ["Sweden", "Stockholm", (116, 163, 243)],

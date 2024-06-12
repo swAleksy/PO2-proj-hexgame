@@ -40,9 +40,13 @@ while running:
             elif unit_move_mode == 1:
                 where_to = pygame.mouse.get_pos()
                 dest_hex = mouse_click_return_hex(where_to, layout, layout.map_data)
-                print(dest_hex.center)
-                h.unit.move_to(dest_hex)  
-                unit_move_mode = 0  # Reset mode after the move
+                if dest_hex is h:
+                    pass
+                else:
+                    h.unit.move_to(dest_hex)  
+                    h.remove_unit()
+                    unit_move_mode = 0  # Reset mode after the move
+                
 
         if event.type == pygame.QUIT:
             running = False
