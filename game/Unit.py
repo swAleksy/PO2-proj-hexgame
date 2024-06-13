@@ -10,6 +10,7 @@ class Unit(pygame.sprite.Sprite):
         self.sprite = SpriteUnit(self.position, image_path)
 
     def move_to(self, new_hex):
+        print(new_hex)
         new_hex.add_unit(Unit(self.owner, new_hex.center, self.img_path ))
 
     def draw_unit(self, screen):
@@ -20,9 +21,8 @@ class Unit(pygame.sprite.Sprite):
     #     if target_unit.health <= 0:
     #         target_unit.die()
 
-    def die(self):
-        # ----------------
-        pass
+    def rm_unit(self):
+       self.kill()
 
 class Infantry(Unit):
     def __init__(self, owner, position, image_path):

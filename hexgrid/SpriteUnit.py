@@ -1,6 +1,5 @@
 import pygame
 
-
 class SpriteUnit(pygame.sprite.Sprite):
     unit_size=32
     def __init__(self, pos, path):

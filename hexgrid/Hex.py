@@ -1,5 +1,4 @@
 from .bpb import Point, colors
-import pygame
 
 class Hex:
     hex_directions = [
@@ -19,7 +18,7 @@ class Hex:
         
         self.center = None
         self.color = colors["SANDISH"]
-
+        self.border_color = (0, 0, 0)
         self.unit = None
 
     def hex_add(self, other):
@@ -45,6 +44,7 @@ class Hex:
         self.unit = unit
 
     def remove_unit(self):
+        self.unit.rm_unit()
         self.unit = None
 
     def __eq__(self, other) -> bool:
@@ -56,7 +56,7 @@ class Hex:
         return hash((self._q, self._r, self._s))
     
     def __repr__(self) -> str:
-        return f"Hex(q={self._q}, r={self._r}, s={self._s})"
+        return f"Hex(q={self._q}, r={self._r}, s={self._s}, cent={self.center})"
     
 def hex_round(h):
     q,r,s = h
@@ -99,7 +99,14 @@ class City(Hex):
     def deploy_unit(self, screen):
         pass
 
+class Wonder(Hex):
+    def __init__(self, q, r, s, wonder_sprite, wonder_name) -> None:
+        super().__init__(q, r, s)
+        self.wonder_sprite = wonder_sprite
+        self.wonder_name = wonder_name
 
+    def draw_wonder(self, screen):
+        self.wonder_sprite.draw_wonder_sprite(screen)
 #             _____
 #            /     \
 #           /       \
