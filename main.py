@@ -44,7 +44,7 @@ while running:
                     pass
                 else:
                     h.unit.move_to(dest_hex)  
-                    h.remove_unit()
+                    
                     unit_move_mode = 0  # Reset mode after the move
                 
 

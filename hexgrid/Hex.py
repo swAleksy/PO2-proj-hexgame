@@ -1,4 +1,5 @@
-from .bpb import Point, colors
+from .bpb import Point, colors, CITI_LEVEL
+from .SpriteCity import SpriteCity
 
 class Hex:
     hex_directions = [
@@ -76,7 +77,7 @@ def hex_round(h):
 
 
 class City(Hex):
-    def __init__(self, q, r, s, city_sprite,city_name, color, unit) -> None:
+    def __init__(self, q, r, s, city_sprite,city_name, color) -> None:
         super().__init__(q, r, s)
         self.city_sprite = city_sprite
         self.border_color = color
@@ -87,7 +88,6 @@ class City(Hex):
         self.money = 100
         self.resources = 10
 
-        self.add_unit(unit)
 
         self.is_destroyed = False
 
@@ -96,8 +96,20 @@ class City(Hex):
         self.city_sprite.draw_city(screen)
         self.city_sprite.draw_city_info(screen, self.max_hp, self.hp, self.city_name)
 
+    def update_city_sprite(self):
+        if self.hp <= 75 and self.hp > 50:
+            self.city_sprite = SpriteCity(self.center, CITI_LEVEL[2])
+        elif self.hp <= 50 and self.hp > 25:
+            self.city_sprite = SpriteCity(self.center, CITI_LEVEL[3])
+        elif self.hp <= 25 and self.hp > 0:
+            self.city_sprite = SpriteCity(self.center, CITI_LEVEL[4])
+        elif self.hp <= 0:
+            self.city_sprite = SpriteCity(self.center, CITI_LEVEL[5])
+            
     def deploy_unit(self, screen):
         pass
+
+
 
 class Wonder(Hex):
     def __init__(self, q, r, s, wonder_sprite, wonder_name) -> None:

@@ -25,6 +25,14 @@ colors = {
     "SANDISH": (194, 178, 128),
 }
 
+CITI_LEVEL = {
+    1: "./assets/city.png",
+    2: "./assets/city75.png",
+    3: "./assets/city50.png",
+    4: "./assets/city25.png",
+    5: "./assets/city0.png"
+}
+
 WONDERS = [
     ["Petra", "./assets/won_pet.png"],
     ["Colosus", "./assets/won_col.png"],

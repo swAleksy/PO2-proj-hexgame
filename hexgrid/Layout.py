@@ -1,9 +1,9 @@
 import pygame, math, random
-from .bpb import Point, COUNTRIES, INF_UNIT_PATH
+from .bpb import Point, COUNTRIES, INF_UNIT_PATH, CITI_LEVEL
 from .Hex import *
 from .SpriteCity import SpriteCity
 from .Infobox import *
-from game.Unit import Unit
+from game.Unit import Unit, Infantry
 from game.Player import Player
 
 class Layout:
@@ -34,11 +34,16 @@ class Layout:
             city_hex = self.map_array[random_index]
             if not isinstance(city_hex, City):
                 random_nation = random.choice(COUNTRIES)
-                player = Player(random_nation[0], self.map_array[random_index],random_nation[2], is_player)
-                city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center),random_nation[1],random_nation[2], Unit(player ,city_hex.center, INF_UNIT_PATH))
+
+                player = Player(random_nation[0], self.map_array[random_index], random_nation[2], is_player)
+
+                city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center, CITI_LEVEL[1]), random_nation[1], random_nation[2])
                 city.set_hex_center(hex_to_pixel(self, city))
+                city.add_unit(Infantry(player, city, INF_UNIT_PATH))
+
                 self.map_array[random_index] = city
                 COUNTRIES.remove(random_nation) 
+
                 break
         
         self.map_data = set(self.map_array)

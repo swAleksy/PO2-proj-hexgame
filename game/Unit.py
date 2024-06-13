@@ -1,31 +1,59 @@
 import pygame
 from hexgrid.SpriteUnit import SpriteUnit
+from hexgrid.Hex import City
 
 class Unit(pygame.sprite.Sprite):
-    def __init__(self, owner, position, image_path):
+    def __init__(self, owner, hex, image_path):
         super().__init__()
         self.owner = owner
-        self.position = position
+        self.current_hex = hex
         self.img_path = image_path
-        self.sprite = SpriteUnit(self.position, image_path)
-
-    def move_to(self, new_hex):
-        print(new_hex)
-        new_hex.add_unit(Unit(self.owner, new_hex.center, self.img_path ))
+        self.sprite = SpriteUnit(hex.center, image_path)
 
     def draw_unit(self, screen):
         self.sprite.draw_unit_sprite(screen, self.owner.color)
+        self.sprite.draw_unit_hp_bar(screen)
 
-    # def attack(self, target_unit):
-    #     target_unit.health -= self.attack_power
-    #     if target_unit.health <= 0:
-    #         target_unit.die()
+    def attack(self, hex):
+        hex.unit.health -= self.attack_power
+        print(hex.unit.health)
+        if hex.unit.health <= 0:
+            hex.remove_unit()
+            print(hex.unit)
+
+    def attack_city(self, hex):
+        hex.hp -= self.attack_power
+        hex.update_city_sprite()
+        print(hex)
+        print(hex.city_sprite.p)
+        if hex.hp <= 0:
+            print("GAME OVER")
 
     def rm_unit(self):
        self.kill()
 
+
 class Infantry(Unit):
-    def __init__(self, owner, position, image_path):
+    def __init__(self, owner, position, image_path, health=12):
         super().__init__(owner, position, image_path)
-        self.health = 10  
-        self.attack_power = 10  
+        self.max_health = 12
+        self.health = health
+        self.attack_power = 4
+
+    def move_to(self, new_hex):
+        if isinstance(new_hex.unit, Unit) :
+            self.attack(new_hex)
+
+        elif isinstance(new_hex, City):
+            self.attack_city(new_hex)
+
+        else:
+            new_hex.add_unit(Infantry(self.owner, new_hex, self.img_path, self.health))
+            self.current_hex.remove_unit()
+
+    def draw_unit(self, screen):
+        self.sprite.draw_unit_sprite(screen, self.owner.color)
+        self.sprite.draw_unit_hp_bar(screen, self.max_health, self.health)
+
+    def __str__(self) -> str:
+        return f"{type(self)}, {self.health}"
