@@ -1,7 +1,8 @@
 import pygame, math, random
-from .bpb import Point, COUNTRIES, INF_UNIT_PATH, CITI_LEVEL
+from .bpb import Point, COUNTRIES, INF_UNIT_PATH, CITI_LEVEL, WONDERS
 from .Hex import *
 from .SpriteCity import SpriteCity
+from .SpriteWonder import SpriteWonder
 from .Infobox import *
 from game.Unit import Unit, Infantry
 from game.Player import Player
@@ -50,7 +51,22 @@ class Layout:
         return player
     
     def add_wonders_to_hexagonal_map(self):
-        pass
+        while True:
+            random_index = random.randint(0, len(self.map_array) - 1)
+            wonder_hex = self.map_array[random_index]
+            if not isinstance(wonder_hex, City):
+                random_wonder = random.choice(WONDERS)
+
+                wonder = Wonder(wonder_hex._q, wonder_hex._r, wonder_hex._s, SpriteWonder(wonder_hex.center, random_wonder[1]), random_wonder[0])
+                wonder.set_hex_center(hex_to_pixel(self, wonder))
+
+                self.map_array[random_index] = wonder
+                WONDERS.remove(random_wonder) 
+
+                if len(WONDERS) == 0:
+                    break
+        
+        self.map_data = set(self.map_array)
 
     def draw_hexagonal_map(self, N: int) -> None:
         for hex in self.map_data:
@@ -59,7 +75,7 @@ class Layout:
     def redraw_hexagonal_map(self, N: int) -> None:
         buff = []
         for hex in self.map_data:   
-            if isinstance(hex, City):
+            if isinstance(hex, City) or isinstance(hex, Wonder):
                 buff.append(hex)
             else:
                 self.draw_hex(hex)
@@ -68,7 +84,7 @@ class Layout:
         
         for hex in buff:
             self.draw_hex( hex)
-            hex.draw_city(self.screen)
+            hex.draw(self.screen)
             if isinstance(hex.unit, Unit):
                 hex.unit.draw_unit(self.screen)
 

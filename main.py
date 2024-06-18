@@ -18,6 +18,7 @@ layout = Layout(LAYOUT_POINTY, Point(hexagon_size, hexagon_size), Point(w // 2, 
 layout.set_hexagonal_map(radius_of_hex_map)
 p1 = layout.add_city_to_hexagonal_map(True)
 p2 = layout.add_city_to_hexagonal_map(False)
+layout.add_wonders_to_hexagonal_map()
 layout.set_city_infobox(w,h)
 
 

@@ -90,7 +90,7 @@ class City(Hex):
         self.city_sprite = city_sprite
         self.border_color = color
         self.city_name = city_name
-        self.owner = owner
+        self.set_owner(owner)
 
         self.max_hp = 40
         self.hp = 40
@@ -101,9 +101,10 @@ class City(Hex):
         self.is_destroyed = False
 
 
-    def draw_city(self, screen):
+    def draw(self, screen):
         self.city_sprite.draw_city(screen)
-        self.city_sprite.draw_city_info(screen, self.max_hp, self.hp, self.city_name)
+        self.city_sprite.draw_city_info(screen, self.max_hp, self.hp, self.city_name, self.border_color)
+
 
     def update_city_sprite(self):
         hp_percent = (self.hp / self.max_hp) * 100
@@ -127,8 +128,9 @@ class Wonder(Hex):
         self.wonder_sprite = wonder_sprite
         self.wonder_name = wonder_name
 
-    def draw_wonder(self, screen):
+    def draw(self, screen):
         self.wonder_sprite.draw_wonder_sprite(screen)
+        self.wonder_sprite.draw_wonder_info(screen, self.wonder_name)
 #             _____
 #            /     \
 #           /       \
