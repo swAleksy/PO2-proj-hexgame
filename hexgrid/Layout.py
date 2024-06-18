@@ -37,10 +37,14 @@ class Layout:
                 random_nation = random.choice(COUNTRIES)
 
                 player = Player(random_nation[0], self.map_array[random_index], random_nation[2], is_player)
-
-                city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center, CITI_LEVEL[1]), random_nation[1], random_nation[2], player)
+                
+                coords = city_hex.hex_ret_coords()
+                city = City(coords[0], coords[1], coords[2], SpriteCity(city_hex.center, CITI_LEVEL[1]), random_nation[1], random_nation[2], player)
                 city.set_hex_center(hex_to_pixel(self, city))
-                city.add_unit(Infantry(player, city, INF_UNIT_PATH))
+
+                base_unit = Infantry(player, city, INF_UNIT_PATH)
+                city.add_unit(base_unit)
+                player.add_unit(base_unit)
 
                 self.map_array[random_index] = city
                 COUNTRIES.remove(random_nation) 
@@ -57,7 +61,8 @@ class Layout:
             if not isinstance(wonder_hex, City):
                 random_wonder = random.choice(WONDERS)
 
-                wonder = Wonder(wonder_hex._q, wonder_hex._r, wonder_hex._s, SpriteWonder(wonder_hex.center, random_wonder[1]), random_wonder[0])
+                coords = wonder_hex.hex_ret_coords()
+                wonder = Wonder(coords[0], coords[1], coords[2], SpriteWonder(wonder_hex.center, random_wonder[1]), random_wonder[0])
                 wonder.set_hex_center(hex_to_pixel(self, wonder))
 
                 self.map_array[random_index] = wonder
@@ -87,6 +92,10 @@ class Layout:
             hex.draw(self.screen)
             if isinstance(hex.unit, Unit):
                 hex.unit.draw_unit(self.screen)
+                
+        for hex in buff:
+            hex.draw_info(self.screen)
+
 
     def draw_hex(self, h):
         corners = polygon_corners(self, h)

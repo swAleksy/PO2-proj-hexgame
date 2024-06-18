@@ -58,3 +58,5 @@ LAYOUT_FLAT = Orientation(3.0/2.0, 0.0, math.sqrt(3.0)/2.0, math.sqrt(3.0),
 
 INF_UNIT_PATH = "./assets/inf.png"
 ARC_UNIT_PATH = "./assets/arc.png"
+
+DENY_SFX_PATH = "./assets/audio/deny.mp3"

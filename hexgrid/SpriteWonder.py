@@ -17,7 +17,7 @@ class SpriteWonder(pygame.sprite.Sprite):
         screen.blit(self.image, self.rect_for_sprite)
 
     def draw_wonder_info(self, screen, name):
-        rect_for_name = pygame.Rect(self.x -15*3, self.y + self.icon_size/2.5, 15*6, 20)
+        rect_for_name = pygame.Rect(self.x -15*2, self.y + self.icon_size/2.5, 15*4, 20)
 
         pygame.draw.rect(screen, (200, 165, 125), rect_for_name, 0) 
         pygame.draw.rect(screen, (72, 59, 45), rect_for_name, 2) 

@@ -6,7 +6,7 @@ class Hex:
         self._q = q
         self._r = r
         self._s = s
-        assert self._q + self._r + self._s == 0
+        assert self._q + self._r + self._s == 0        
         
         self.owner = None
         self.center = None
@@ -36,7 +36,7 @@ class Hex:
         assert 0 <= direction < 6, "Invalid direction"
         return Hex.hex_directions[direction]
 
-    def hex_ret_pos(self):
+    def hex_ret_coords(self):
         return (self._q, self._r, self._s)
 
     def set_hex_center(self, p: Point):
@@ -97,12 +97,13 @@ class City(Hex):
         self.money = 100
         self.resources = 10
 
-
         self.is_destroyed = False
 
 
     def draw(self, screen):
         self.city_sprite.draw_city(screen)
+
+    def draw_info(self, screen):
         self.city_sprite.draw_city_info(screen, self.max_hp, self.hp, self.city_name, self.border_color)
 
 
@@ -130,6 +131,8 @@ class Wonder(Hex):
 
     def draw(self, screen):
         self.wonder_sprite.draw_wonder_sprite(screen)
+
+    def draw_info(self, screen):
         self.wonder_sprite.draw_wonder_info(screen, self.wonder_name)
 #             _____
 #            /     \

@@ -25,7 +25,7 @@ class SpriteCity(pygame.sprite.Sprite):
         pygame.draw.line(screen, colors["BGREEN"],start_pos, end_pos_acc, 3)
 
 
-        rect_for_name = pygame.Rect(self.x -15*3, self.y + self.icon_size/2.5, 15*6, 20)
+        rect_for_name = pygame.Rect(self.x -15*2, self.y + self.icon_size/2.5, 15*4, 20)
 
         pygame.draw.rect(screen, col, rect_for_name, 0)
         

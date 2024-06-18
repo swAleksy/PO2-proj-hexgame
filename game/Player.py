@@ -12,3 +12,11 @@ class Player:
 
     def remove_unit(self, unit):
         self.units.remove(unit)
+
+    def refill_movement(self):
+        for unit in self.units:
+            print(unit)
+            unit.refill_movement()
+
+    def __str__(self) -> str:
+        return f"Player: {self.name}, city:{self.city}, isPlayer1 {self.is_player}"
