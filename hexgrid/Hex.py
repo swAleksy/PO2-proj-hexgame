@@ -2,15 +2,6 @@ from .bpb import Point, colors, CITI_LEVEL
 from .SpriteCity import SpriteCity
 
 class Hex:
-    hex_directions = [
-        (1, 0, -1), 
-        (1, -1, 0), 
-        (0, -1, 1), 
-        (-1, 0, 1), 
-        (-1, 1, 0), 
-        (0, 1, -1)
-    ]
-    
     def __init__(self, q, r, s) -> None:
         self._q = q
         self._r = r
@@ -22,9 +13,21 @@ class Hex:
         self.color = colors["SANDISH"]
         self.border_color = (0, 0, 0)
         self.unit = None
+        self.neighbor_list = []
+        self.hex_directions = [
+        (1, 0, -1), 
+        (1, -1, 0), 
+        (0, -1, 1), 
+        (-1, 0, 1), 
+        (-1, 1, 0), 
+        (0, 1, -1)
+        ]
+        for direction in self.hex_directions:
+            self.neighbor_list.append(self.hex_add(direction))
+
 
     def hex_add(self, other):
-        return Hex(self._q + other._q, self._r + other._r, self._s + other._s)
+        return (self._q + other[0], self._r + other[1], self._s + other[2])
 
     def hex_sub(self, other):
         return Hex(self._q - other._q, self._r - other._r, self._s - other._s)
@@ -33,8 +36,8 @@ class Hex:
         assert 0 <= direction < 6, "Invalid direction"
         return Hex.hex_directions[direction]
 
-    def hex_neighbor(self, direction):
-        return self.hex_add(self.hex_direction(direction))
+    def hex_ret_pos(self):
+        return (self._q, self._r, self._s)
 
     def set_hex_center(self, p: Point):
         self.center = p

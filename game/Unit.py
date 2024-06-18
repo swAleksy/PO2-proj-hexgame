@@ -10,11 +10,16 @@ class Unit(pygame.sprite.Sprite):
         self.img_path = image_path
         self.sprite = SpriteUnit(hex.center, image_path)
 
+        self.deny_sfx = pygame.mixer.Sound("./assets/audio/deny.mp3")
+        self.march_sfx = pygame.mixer.Sound("./assets/audio/march.mp3")
+        self.fight_sfx = pygame.mixer.Sound("./assets/audio/fight.mp3")
+
     def draw_unit(self, screen):
         self.sprite.draw_unit_sprite(screen, self.owner.color)
         self.sprite.draw_unit_hp_bar(screen)
 
     def attack(self, hex):
+        self.fight_sfx.play()
         hex.unit.health -= self.attack_power
         print(hex.unit.health)
         if hex.unit.health <= 0:
@@ -22,6 +27,7 @@ class Unit(pygame.sprite.Sprite):
             print(hex.unit)
 
     def attack_city(self, hex):
+        self.fight_sfx.play()
         hex.hp -= self.attack_power
         hex.update_city_sprite()
         if hex.hp <= 0:
@@ -39,16 +45,21 @@ class Infantry(Unit):
         self.attack_power = 4
 
     def move_to(self, new_hex):
-        if isinstance(new_hex.unit, Unit) and self.owner != new_hex.owner:
-            self.attack(new_hex)
+        pos = new_hex.hex_ret_pos()
+        if pos in self.current_hex.neighbor_list:
+            if isinstance(new_hex.unit, Unit) and self.owner != new_hex.owner:
+                self.attack(new_hex)
 
-        elif isinstance(new_hex, City) and new_hex.hp > 0 and self.owner != new_hex.owner:
-            self.attack_city(new_hex)
+            elif isinstance(new_hex, City) and new_hex.hp > 0 and self.owner != new_hex.owner:
+                self.attack_city(new_hex)
 
+            else:
+                new_hex.add_unit(Infantry(self.owner, new_hex, self.img_path, self.health))
+                # new_hex.set_owner(self.owner)
+                self.march_sfx.play()
+                self.current_hex.remove_unit()
         else:
-            new_hex.add_unit(Infantry(self.owner, new_hex, self.img_path, self.health))
-            # new_hex.set_owner(self.owner)
-            self.current_hex.remove_unit()
+            self.deny_sfx.play()
 
     def draw_unit(self, screen):
         self.sprite.draw_unit_sprite(screen, self.owner.color)

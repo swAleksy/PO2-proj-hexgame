@@ -30,6 +30,7 @@ while running:
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONUP:
+            print(h)
             if unit_move_mode == 0:  
                 pos = pygame.mouse.get_pos()
                 h = mouse_click_return_hex(pos, layout, layout.map_data)
