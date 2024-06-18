@@ -24,8 +24,6 @@ class Unit(pygame.sprite.Sprite):
     def attack_city(self, hex):
         hex.hp -= self.attack_power
         hex.update_city_sprite()
-        print(hex)
-        print(hex.city_sprite.p)
         if hex.hp <= 0:
             print("GAME OVER")
 
@@ -41,14 +39,15 @@ class Infantry(Unit):
         self.attack_power = 4
 
     def move_to(self, new_hex):
-        if isinstance(new_hex.unit, Unit) :
+        if isinstance(new_hex.unit, Unit) and self.owner != new_hex.owner:
             self.attack(new_hex)
 
-        elif isinstance(new_hex, City):
+        elif isinstance(new_hex, City) and new_hex.hp > 0 and self.owner != new_hex.owner:
             self.attack_city(new_hex)
 
         else:
             new_hex.add_unit(Infantry(self.owner, new_hex, self.img_path, self.health))
+            # new_hex.set_owner(self.owner)
             self.current_hex.remove_unit()
 
     def draw_unit(self, screen):

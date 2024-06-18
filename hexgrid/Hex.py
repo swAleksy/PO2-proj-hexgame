@@ -17,6 +17,7 @@ class Hex:
         self._s = s
         assert self._q + self._r + self._s == 0
         
+        self.owner = None
         self.center = None
         self.color = colors["SANDISH"]
         self.border_color = (0, 0, 0)
@@ -48,6 +49,10 @@ class Hex:
         self.unit.rm_unit()
         self.unit = None
 
+    def set_owner(self, player):
+        self.owner = player
+        self.border_color = self.owner.color
+        
     def __eq__(self, other) -> bool:
         if isinstance(other, Hex):
             return self._q == other._q and self._r == other._r and self._s == other._s
@@ -77,14 +82,15 @@ def hex_round(h):
 
 
 class City(Hex):
-    def __init__(self, q, r, s, city_sprite,city_name, color) -> None:
+    def __init__(self, q, r, s, city_sprite,city_name, color, owner) -> None:
         super().__init__(q, r, s)
         self.city_sprite = city_sprite
         self.border_color = color
         self.city_name = city_name
+        self.owner = owner
 
-        self.max_hp = 100
-        self.hp = 100
+        self.max_hp = 40
+        self.hp = 40
         self.money = 100
         self.resources = 10
 
@@ -97,15 +103,16 @@ class City(Hex):
         self.city_sprite.draw_city_info(screen, self.max_hp, self.hp, self.city_name)
 
     def update_city_sprite(self):
-        if self.hp <= 75 and self.hp > 50:
+        hp_percent = (self.hp / self.max_hp) * 100
+        if 50 < hp_percent <= 75:
             self.city_sprite = SpriteCity(self.center, CITI_LEVEL[2])
-        elif self.hp <= 50 and self.hp > 25:
+        elif 25 < hp_percent <= 50:
             self.city_sprite = SpriteCity(self.center, CITI_LEVEL[3])
-        elif self.hp <= 25 and self.hp > 0:
+        elif 0 < hp_percent <= 25:
             self.city_sprite = SpriteCity(self.center, CITI_LEVEL[4])
-        elif self.hp <= 0:
+        elif hp_percent <= 0:
             self.city_sprite = SpriteCity(self.center, CITI_LEVEL[5])
-            
+
     def deploy_unit(self, screen):
         pass
 

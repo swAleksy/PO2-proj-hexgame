@@ -8,7 +8,6 @@ class SpriteCity(pygame.sprite.Sprite):
         super().__init__()
         self.x = pos.x
         self.y = pos.y
-        self.p = path ###
         self.default_city_icon = pygame.image.load(path).convert_alpha()
         self.image = pygame.transform.scale(self.default_city_icon, (self.icon_size, self.icon_size))
         self.rect_for_sprite = pygame.Rect(self.x-self.icon_size/2, self.y-self.icon_size/1.8, self.icon_size, self.icon_size)

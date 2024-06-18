@@ -37,7 +37,7 @@ class Layout:
 
                 player = Player(random_nation[0], self.map_array[random_index], random_nation[2], is_player)
 
-                city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center, CITI_LEVEL[1]), random_nation[1], random_nation[2])
+                city = City(city_hex._q, city_hex._r, city_hex._s, SpriteCity(city_hex.center, CITI_LEVEL[1]), random_nation[1], random_nation[2], player)
                 city.set_hex_center(hex_to_pixel(self, city))
                 city.add_unit(Infantry(player, city, INF_UNIT_PATH))
 
@@ -77,7 +77,9 @@ class Layout:
         point_list = [(p.x, p.y) for p in corners]
         pygame.draw.polygon(self.screen, h.color, point_list, 0)
         if (isinstance(h, City)):
-            pygame.draw.polygon(self.screen, h.border_color, point_list, 3)
+            pygame.draw.polygon(self.screen, h.border_color, point_list, 4)
+        elif h.border_color != (0,0,0): 
+            pygame.draw.polygon(self.screen, h.border_color, point_list, 4)
         else: 
             pygame.draw.polygon(self.screen, h.border_color, point_list, 1)
 
