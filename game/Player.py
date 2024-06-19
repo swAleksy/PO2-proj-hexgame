@@ -1,12 +1,11 @@
 
 class Player:
-    def __init__(self, name, city, color, is_player) -> None:
+    def __init__(self, name, city, color) -> None:
         self.name = name
         self.city = city
         self.color = color
         self.units = []
-        self.is_player = is_player
-        
+
     def add_unit(self, unit):
         self.units.append(unit)
 
@@ -19,4 +18,4 @@ class Player:
             unit.refill_movement()
 
     def __str__(self) -> str:
-        return f"Player: {self.name}, city:{self.city}, isPlayer1 {self.is_player}"
+        return f"Player: {self.name}, city:{self.city}"

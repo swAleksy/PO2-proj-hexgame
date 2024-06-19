@@ -3,16 +3,17 @@ from .bpb import Point, COUNTRIES, INF_UNIT_PATH, CITI_LEVEL, WONDERS
 from .Hex import *
 from .SpriteCity import SpriteCity
 from .SpriteWonder import SpriteWonder
-from .Infobox import *
 from game.Unit import Unit, Infantry
 from game.Player import Player
+from .Infobox import CityInfoBox, UnitInfoBox
 
 class Layout:
-    def __init__(self, orientation, size, origin, screen) -> None:
+    def __init__(self, orientation, size, origin, screen, w, h) -> None:
+        self.width = w
+        self.heigh = h
         self.orientation = orientation
         self.size = size
         self.origin = origin
-        self.infobox = None
         self.screen = screen
         self.map_array = None
         self.map_data = {}
@@ -29,20 +30,20 @@ class Layout:
 
         self.map_array = hex_map
 
-    def add_city_to_hexagonal_map(self, is_player):
+    def add_city_to_hexagonal_map(self):
         while True:
             random_index = random.randint(0, len(self.map_array) - 1)
             city_hex = self.map_array[random_index]
             if not isinstance(city_hex, City):
                 random_nation = random.choice(COUNTRIES)
 
-                player = Player(random_nation[0], self.map_array[random_index], random_nation[2], is_player)
+                player = Player(random_nation[0], self.map_array[random_index], random_nation[2])
                 
                 coords = city_hex.hex_ret_coords()
-                city = City(coords[0], coords[1], coords[2], SpriteCity(city_hex.center, CITI_LEVEL[1]), random_nation[1], random_nation[2], player)
+                city = City(coords[0], coords[1], coords[2], SpriteCity(city_hex.center, CITI_LEVEL[1]), random_nation[1], random_nation[2], player, CityInfoBox(self.screen, self.width, self.heigh))
                 city.set_hex_center(hex_to_pixel(self, city))
 
-                base_unit = Infantry(player, city, INF_UNIT_PATH)
+                base_unit = Infantry(player, city, INF_UNIT_PATH, UnitInfoBox(self.screen, self.width, self.heigh))
                 city.add_unit(base_unit)
                 player.add_unit(base_unit)
 
@@ -58,7 +59,7 @@ class Layout:
         while True:
             random_index = random.randint(0, len(self.map_array) - 1)
             wonder_hex = self.map_array[random_index]
-            if not isinstance(wonder_hex, City):
+            if not isinstance(wonder_hex, City) and not isinstance(wonder_hex, Wonder):
                 random_wonder = random.choice(WONDERS)
 
                 coords = wonder_hex.hex_ret_coords()
@@ -108,8 +109,6 @@ class Layout:
         else: 
             pygame.draw.polygon(self.screen, h.border_color, point_list, 1)
 
-    def set_city_infobox(self,window_x, window_y):
-        self.infobox = CityInfoBox(self.screen, window_x, window_y)
 
 def hex_to_pixel(layout, h):
     M = layout.orientation

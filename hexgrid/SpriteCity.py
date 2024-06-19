@@ -16,7 +16,7 @@ class SpriteCity(pygame.sprite.Sprite):
     def draw_city(self, screen):
         screen.blit(self.image, self.rect_for_sprite)
 
-    def draw_city_info(self, screen, max_hp, acc_hp, city_name, col):
+    def draw_city_hpbar_and_name(self, screen, max_hp, acc_hp, city_name, color):
         start_pos = (self.x - self.icon_size/2, self.y - self.icon_size/2)
         end_pos = (self.x + self.icon_size/2, self.y - self.icon_size/2)
         perc = (acc_hp*100) / max_hp
@@ -27,10 +27,10 @@ class SpriteCity(pygame.sprite.Sprite):
 
         rect_for_name = pygame.Rect(self.x -15*2, self.y + self.icon_size/2.5, 15*4, 20)
 
-        pygame.draw.rect(screen, col, rect_for_name, 0)
+        pygame.draw.rect(screen, color, rect_for_name, 0)
         
         pygame.draw.rect(screen, (72, 59, 45), rect_for_name, 2) 
-        if sum(col)/len(col) > 150:
+        if sum(color)/len(color) > 150:
             img = self.font.render(city_name, True, (0, 0, 0))
         else:
             img = self.font.render(city_name, True, (200,200,200))

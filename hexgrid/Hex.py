@@ -85,12 +85,14 @@ def hex_round(h):
 
 
 class City(Hex):
-    def __init__(self, q, r, s, city_sprite,city_name, color, owner) -> None:
+    def __init__(self, q, r, s, city_sprite,city_name, color, owner, infobox) -> None:
         super().__init__(q, r, s)
         self.city_sprite = city_sprite
-        self.border_color = color
+        self.border_color = color 
         self.city_name = city_name
         self.set_owner(owner)
+
+        self.infobox = infobox
 
         self.max_hp = 40
         self.hp = 40
@@ -104,8 +106,10 @@ class City(Hex):
         self.city_sprite.draw_city(screen)
 
     def draw_info(self, screen):
-        self.city_sprite.draw_city_info(screen, self.max_hp, self.hp, self.city_name, self.border_color)
+        self.city_sprite.draw_city_hpbar_and_name(screen, self.max_hp, self.hp, self.city_name, self.border_color)
 
+    def draw_infobox(self):
+        self.infobox.draw_city_infobox(self)
 
     def update_city_sprite(self):
         hp_percent = (self.hp / self.max_hp) * 100
@@ -133,7 +137,7 @@ class Wonder(Hex):
         self.wonder_sprite.draw_wonder_sprite(screen)
 
     def draw_info(self, screen):
-        self.wonder_sprite.draw_wonder_info(screen, self.wonder_name)
+        self.wonder_sprite.draw_wonder_namebar(screen, self.wonder_name)
 #             _____
 #            /     \
 #           /       \
