@@ -6,11 +6,15 @@ class Infobox:
         self.y = height
         self.screen = screen
         self.font = pygame.font.SysFont("Arial",15)
-        self.rect = pygame.Rect(0, self.y-200, 300, 200)
+        self.rect = pygame.Rect(0, self.y-200, 300, 150)
         
     def draw_rect(self):
         pygame.draw.rect(self.screen, (128, 128, 128), self.rect, 0) 
         pygame.draw.rect(self.screen, (0, 0, 0), self.rect, 4)
+
+    def get_rect(self):
+        return self.rect
+
  
 class CityInfoBox(Infobox):
     def __init__(self, screen, width, height) -> None:
@@ -18,6 +22,7 @@ class CityInfoBox(Infobox):
 
     def draw_city_infobox(self, city):
         self.draw_rect()
+
 
         city_info = [
             f"Name: {city.city_name}",

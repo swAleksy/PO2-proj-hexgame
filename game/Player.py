@@ -18,4 +18,4 @@ class Player:
             unit.refill_movement()
 
     def __str__(self) -> str:
-        return f"Player: {self.name}, city:{self.city}"
+        return f"Player: {self.name}"

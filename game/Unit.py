@@ -95,4 +95,4 @@ class Infantry(Unit):
         self.infobox.draw_unit_infobox(self)
 
     def __str__(self) -> str:
-        return f"Inf: {self.owner.name}{type(self)}, {self.moves}, -- {self.current_hex}"
+        return f"Inf: {self.name}{type(self)}, {self.moves}, -- {self.current_hex}"

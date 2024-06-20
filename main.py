@@ -1,19 +1,20 @@
 import pygame, sys, random
 from hexgrid.Layout import *
+from hexgrid.Buttons import *
 from hexgrid.bpb import Point, LAYOUT_POINTY, DENY_SFX_PATH
 from game.Player import Player
 from game.Unit import Unit
 
 pygame.init()
 
-w ,h = 1300, 1000
-screen = pygame.display.set_mode((w, h))
+WIDTH, HEIGHT = 1300, 1000
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 hexagon_size = 40
 radius_of_hex_map = 7
 
 clock = pygame.time.Clock()
 
-layout = Layout(LAYOUT_POINTY, Point(hexagon_size, hexagon_size), Point(w // 2, h // 2), screen, w, h)
+layout = Layout(LAYOUT_POINTY, Point(hexagon_size, hexagon_size), Point(WIDTH // 2, HEIGHT // 2), screen, WIDTH, HEIGHT)
 layout.set_hexagonal_map(radius_of_hex_map)
 
 p1 = layout.add_city_to_hexagonal_map()
@@ -23,10 +24,14 @@ players = [p1, p2]
 layout.add_wonders_to_hexagonal_map()
 
 font = pygame.font.SysFont("Tahoma", 20)
-button_rect = pygame.Rect(w - 100, h - 100, 90, 90)
-button_text = font.render(f'End Turn', True, w)
-player1_font_render = font.render(players[0].name, True, w)
-player2_font_render = font.render(players[1].name, True, w)
+# button_rect = pygame.Rect(w - 100, h - 100, 90, 90)
+# button_text = font.render(f'End Turn', True, w)
+player1_font_render = font.render(players[0].name, True, WIDTH)
+player2_font_render = font.render(players[1].name, True, WIDTH)
+
+next_turn_button = Button(WIDTH - 100, HEIGHT - 150, 90, 90, "Next Turn", colors["SANDISH"], (123, 63, 0))
+new_unit_button = Button(0, HEIGHT - 50, 100, 50, "Buy unit", colors["SANDISH"], (123, 63, 0))
+take_over_tile = Button(200, HEIGHT - 50, 100, 50, "Take tile", colors["SANDISH"], (123, 63, 0))
 deny_sfx = pygame.mixer.Sound(DENY_SFX_PATH)
 
 running = True
@@ -39,42 +44,60 @@ turn = 0
 while running:
     screen.fill(colors["DBLUE"])
     current_player = players[turn % 2]
-    # print(selected_unit)
-    pygame.draw.rect(screen, colors["SANDISH"], button_rect)
-    screen.blit(button_text, (button_rect.x + 6, button_rect.y + 30))
 
+    next_turn_button.draw(screen)
+    
+    
     layout.redraw_hexagonal_map(radius_of_hex_map)
 
+    
+    button_center_x = (WIDTH - 100) + 90 // 2
+    text_x1 = button_center_x - player1_font_render.get_width() // 2
+    text_x2 = button_center_x - player2_font_render.get_width() // 2
     if turn % 2 == 0:
-        screen.blit(player1_font_render, (button_rect.x + 6, button_rect.y - 30))
+        screen.blit(player1_font_render, (text_x1, HEIGHT - 60))
     else:
-        screen.blit(player2_font_render, (button_rect.x + 6, button_rect.y - 30))
+        screen.blit(player2_font_render, (text_x2, HEIGHT - 60))
 
-    # if selected_hex != None and isinstance(selected_hex, City):
-    #     selected_hex.draw_infobox()
+    if selected_hex != None and isinstance(selected_hex, City) and current_player == selected_hex.owner:
+        selected_hex.draw_infobox()
+        new_unit_button.draw(screen)
 
-    # elif selected_unit != None:
-    #     selected_unit.draw_unit_infobox()
+    elif selected_unit != None:
+        selected_unit.draw_unit_infobox()
+        take_over_tile.draw(screen)
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONUP:
             pos = pygame.mouse.get_pos()
             h = mouse_click_return_hex(pos, layout, layout.map_data)
 
-            if button_rect.collidepoint(event.pos):
+            if next_turn_button.check_click(event):
                 current_player.refill_movement()
                 unit_move_mode = False
                 selected_unit = None
+                selected_hex = None
                 turn += 1
                 continue
 
-            if not unit_move_mode:
+            if new_unit_button.check_click(event):
+                print("test n u ")
+                new_unit_button.take_over_hex()
+
+            if take_over_tile.check_click(event):
+                print("test t o t")
+                selected_unit.take_over_hex()
+
+            if unit_move_mode == False and h != None:
                 if isinstance(h.unit, Unit) and h.unit.owner == current_player:
                     unit_move_mode = True
                     selected_unit = h.unit
+                    selected_hex = None
                     print(selected_unit)
 
-                elif isinstance(h, Hex) and h.unit and h.unit.owner == current_player:
+                elif isinstance(h, City):
+                    unit_move_mode = False
+                    selected_unit = None
                     selected_hex = h
 
                 elif h.unit is not None and isinstance(h.unit, Unit):
@@ -82,11 +105,15 @@ while running:
                     selected_unit = None
                     deny_sfx.play()
 
-            elif unit_move_mode:
+            elif unit_move_mode == True and h != None:
                 where_to = pygame.mouse.get_pos()
                 dest_hex = mouse_click_return_hex(where_to, layout, layout.map_data)
-                if dest_hex is not selected_hex and selected_unit and selected_unit.moves > 0:
+                selected_hex = None
+                if dest_hex is not selected_hex and selected_unit is not None and selected_unit.moves > 0:
                     selected_unit.move_to(dest_hex)
+                    unit_move_mode = False
+                    selected_unit = None
+                else:
                     unit_move_mode = False
                     selected_unit = None
 
@@ -99,6 +126,11 @@ while running:
         elif event.type == pygame.QUIT:
             running = False
 
+    mouse_pos = pygame.mouse.get_pos()
+    next_turn_button.check_hover(mouse_pos)
+    new_unit_button.check_hover(mouse_pos)
+    take_over_tile.check_hover(mouse_pos)
+    
     pygame.display.flip()
     clock.tick(30)
 
