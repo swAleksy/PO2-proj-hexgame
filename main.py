@@ -1,20 +1,20 @@
 import pygame, sys, random
 from hexgrid.Layout import *
 from hexgrid.Buttons import *
-from hexgrid.bpb import Point, LAYOUT_POINTY, DENY_SFX_PATH
+from hexgrid.bpb import Point, LAYOUT_POINTY, DENY_SFX_PATH, INF_UNIT_PATH
 from game.Player import Player
 from game.Unit import Unit
 
 pygame.init()
 
 WIDTH, HEIGHT = 1300, 1000
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 hexagon_size = 40
 radius_of_hex_map = 7
 
 clock = pygame.time.Clock()
 
-layout = Layout(LAYOUT_POINTY, Point(hexagon_size, hexagon_size), Point(WIDTH // 2, HEIGHT // 2), screen, WIDTH, HEIGHT)
+layout = Layout(LAYOUT_POINTY, Point(hexagon_size, hexagon_size), Point(WIDTH // 2, HEIGHT // 2), SCREEN, WIDTH, HEIGHT)
 layout.set_hexagonal_map(radius_of_hex_map)
 
 p1 = layout.add_city_to_hexagonal_map()
@@ -42,10 +42,10 @@ selected_hex = None
 
 turn = 0
 while running:
-    screen.fill(colors["DBLUE"])
+    SCREEN.fill(colors["DBLUE"])
     current_player = players[turn % 2]
 
-    next_turn_button.draw(screen)
+    next_turn_button.draw(SCREEN)
     
     
     layout.redraw_hexagonal_map(radius_of_hex_map)
@@ -55,17 +55,17 @@ while running:
     text_x1 = button_center_x - player1_font_render.get_width() // 2
     text_x2 = button_center_x - player2_font_render.get_width() // 2
     if turn % 2 == 0:
-        screen.blit(player1_font_render, (text_x1, HEIGHT - 60))
+        SCREEN.blit(player1_font_render, (text_x1, HEIGHT - 60))
     else:
-        screen.blit(player2_font_render, (text_x2, HEIGHT - 60))
+        SCREEN.blit(player2_font_render, (text_x2, HEIGHT - 60))
 
     if selected_hex != None and isinstance(selected_hex, City) and current_player == selected_hex.owner:
         selected_hex.draw_infobox()
-        new_unit_button.draw(screen)
+        new_unit_button.draw(SCREEN)
 
     elif selected_unit != None:
         selected_unit.draw_unit_infobox()
-        take_over_tile.draw(screen)
+        take_over_tile.draw(SCREEN)
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONUP:
@@ -81,11 +81,12 @@ while running:
                 continue
 
             if new_unit_button.check_click(event):
-                print("test n u ")
-                new_unit_button.take_over_hex()
+                new_unit = Infantry(current_player, selected_hex, INF_UNIT_PATH, UnitInfoBox(SCREEN, WIDTH, HEIGHT))
+                selected_hex.add_unit(new_unit)
+                current_player.add_unit(new_unit)
+                
 
             if take_over_tile.check_click(event):
-                print("test t o t")
                 selected_unit.take_over_hex()
 
             if unit_move_mode == False and h != None:
@@ -130,7 +131,7 @@ while running:
     next_turn_button.check_hover(mouse_pos)
     new_unit_button.check_hover(mouse_pos)
     take_over_tile.check_hover(mouse_pos)
-    
+
     pygame.display.flip()
     clock.tick(30)
 

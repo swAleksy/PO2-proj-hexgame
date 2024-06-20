@@ -58,7 +58,7 @@ class Infantry(Unit):
 
     def move_to(self, new_hex):
         pos = new_hex.hex_ret_coords()
-        if pos in self.current_hex.neighbor_list:
+        if pos in self.current_hex.neighbor_list and new_hex.unit == None:
             if isinstance(new_hex.unit, Unit) and self.owner != new_hex.owner:
                 self.moves -= 1
                 self.attack(new_hex)
