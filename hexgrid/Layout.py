@@ -37,7 +37,7 @@ class Layout:
             if not isinstance(city_hex, City):
                 random_nation = random.choice(COUNTRIES)
 
-                player = Player(random_nation[0], self.map_array[random_index], random_nation[2])
+                player = Player(random_nation[0], random_nation[2])
                 
                 coords = city_hex.hex_ret_coords()
                 city = City(coords[0], coords[1], coords[2], SpriteCity(city_hex.center, CITI_LEVEL[1]), random_nation[1], random_nation[2], player, CityInfoBox(self.screen, self.width, self.heigh))
@@ -45,6 +45,7 @@ class Layout:
 
                 base_unit = Infantry(player, city, INF_UNIT_PATH, UnitInfoBox(self.screen, self.width, self.heigh))
                 city.add_unit(base_unit)
+                player.add_city(city)
                 player.add_unit(base_unit)
 
                 self.map_array[random_index] = city

@@ -101,7 +101,6 @@ class City(Hex):
 
         self.is_destroyed = False
 
-
     def draw(self, screen):
         self.city_sprite.draw_city(screen)
 
@@ -125,6 +124,8 @@ class City(Hex):
     def deploy_unit(self, screen):
         pass
 
+    def __str__(self) -> str:
+        return f"City: {self.city_name}, owner:{self.owner}"
 
 
 class Wonder(Hex):
@@ -138,6 +139,9 @@ class Wonder(Hex):
 
     def draw_info(self, screen):
         self.wonder_sprite.draw_wonder_namebar(screen, self.wonder_name)
+
+    def __str__(self) -> str:
+        return f"Wonder: {self.wonder_name}"
 #             _____
 #            /     \
 #           /       \

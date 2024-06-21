@@ -47,7 +47,7 @@ DEFAULT_MOVES = 1
 DEFAULT_ATTACK_POWER = 4
 
 class Infantry(Unit):
-    def __init__(self, owner, position, image_path, infobox, health = DEFAULT_HEALTH, moves = DEFAULT_MOVES):
+    def __init__(self, owner, position, image_path, infobox, moves = DEFAULT_MOVES, health = DEFAULT_HEALTH, ):
         super().__init__(owner, position, image_path)
         self.name = "Infantry"
         self.max_health = DEFAULT_HEALTH
@@ -57,9 +57,10 @@ class Infantry(Unit):
         self.infobox = infobox
 
     def move_to(self, new_hex):
+        print("test")
         pos = new_hex.hex_ret_coords()
-        if pos in self.current_hex.neighbor_list and new_hex.unit == None:
-            if isinstance(new_hex.unit, Unit) and self.owner != new_hex.owner:
+        if pos in self.current_hex.neighbor_list:
+            if isinstance(new_hex.unit, Unit) and new_hex.unit.owner != self.owner:
                 self.moves -= 1
                 self.attack(new_hex)
 
@@ -67,9 +68,9 @@ class Infantry(Unit):
                 self.moves -= 1
                 self.attack_city(new_hex)
 
-            else:
+            elif new_hex.unit == None:
                 self.moves -= 1
-                cp_unit = Infantry(self.owner, new_hex, self.img_path, self.infobox, self.health, self.moves)
+                cp_unit = Infantry(self.owner, new_hex, self.img_path, self.infobox, self.moves, self.health)
                 for i in self.owner.units:
                     if i == self:
                         self.owner.remove_unit(i)
@@ -80,7 +81,8 @@ class Infantry(Unit):
                 self.march_sfx.play()
                 self.rm_unit()
                 self.current_hex.remove_unit()
-
+            else: 
+                self.deny_sfx.play()
         else:
             self.deny_sfx.play()
 

@@ -8,8 +8,8 @@ class Infobox:
         self.font = pygame.font.SysFont("Arial",15)
         self.rect = pygame.Rect(0, self.y-200, 300, 150)
         
-    def draw_rect(self):
-        pygame.draw.rect(self.screen, (128, 128, 128), self.rect, 0) 
+    def draw_rect(self, color):
+        pygame.draw.rect(self.screen, color, self.rect, 0) 
         pygame.draw.rect(self.screen, (0, 0, 0), self.rect, 4)
 
     def get_rect(self):
@@ -21,7 +21,7 @@ class CityInfoBox(Infobox):
         super().__init__(screen, width, height)
 
     def draw_city_infobox(self, city):
-        self.draw_rect()
+        self.draw_rect(city.owner.color)
 
 
         city_info = [
@@ -34,7 +34,10 @@ class CityInfoBox(Infobox):
 
         y_offset = self.y - 180
         for info in city_info:
-            img = self.font.render(info, True, (0, 0, 0))
+            if sum(city.owner.color)/len(city.owner.color) > 180: 
+                img = self.font.render(info, True, (255, 255, 255))
+            else:
+                img = self.font.render(info, True,  (0, 0, 0))
             self.screen.blit(img, (15, y_offset))
             y_offset += 20 
 
@@ -43,7 +46,7 @@ class UnitInfoBox(Infobox):
         super().__init__(screen, width, height)
 
     def draw_unit_infobox(self, unit):
-        self.draw_rect()
+        self.draw_rect(unit.owner.color)
 
         city_info = [
             f"Name: {unit.name}",
@@ -55,6 +58,9 @@ class UnitInfoBox(Infobox):
 
         y_offset = self.y - 180
         for info in city_info:
-            img = self.font.render(info, True, (0, 0, 0))
+            if sum(unit.owner.color)/len(unit.owner.color) > 180: 
+                img = self.font.render(info, True, (255, 255, 255) )
+            else:
+                img = self.font.render(info, True, (0, 0, 0))
             self.screen.blit(img, (15, y_offset))
             y_offset += 20 
