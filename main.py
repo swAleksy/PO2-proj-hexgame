@@ -2,8 +2,9 @@ import pygame, sys
 from hexgrid.Layout import *
 from hexgrid.Buttons import *
 from hexgrid.bpb import Point, LAYOUT_POINTY, DENY_SFX_PATH, INF_UNIT_PATH
-from game.Player import Player
 from game.Unit import Unit
+
+BACKGROUND_MUSIC_PATH = "./assets/audio/eumusic.mp3"
 
 def start_menu():
     running = True
@@ -215,5 +216,9 @@ if __name__ == "__main__":
     SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
     HEX_SIZE = 40
     MAP_RADIOUS = 7
+
+    pygame.mixer.music.load(BACKGROUND_MUSIC_PATH)
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.5)
     start_menu()
     main()

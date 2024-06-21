@@ -1,6 +1,5 @@
 import pygame
 
-
 class SpriteWonder(pygame.sprite.Sprite):
     icon_size = 64
     def __init__(self, pos, path):

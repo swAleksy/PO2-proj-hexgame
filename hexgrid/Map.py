@@ -1,4 +1,4 @@
-import pygame, sys, random
+import pygame
 from Layout import *
 from bpb import LAYOUT_POINTY, colors, Point
 

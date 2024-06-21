@@ -34,10 +34,10 @@ class CityInfoBox(Infobox):
 
         y_offset = self.y - 180
         for info in city_info:
-            if sum(city.owner.color)/len(city.owner.color) > 180: 
-                img = self.font.render(info, True, (255, 255, 255))
+            if sum(city.owner.color)/len(city.owner.color) > 128: 
+                img = self.font.render(info, True, (0, 0, 0))
             else:
-                img = self.font.render(info, True,  (0, 0, 0))
+                img = self.font.render(info, True, (255,255,255))
             self.screen.blit(img, (15, y_offset))
             y_offset += 20 
 
@@ -58,9 +58,9 @@ class UnitInfoBox(Infobox):
 
         y_offset = self.y - 180
         for info in city_info:
-            if sum(unit.owner.color)/len(unit.owner.color) > 180: 
-                img = self.font.render(info, True, (255, 255, 255) )
+            if sum(unit.owner.color)/len(unit.owner.color) > 128: 
+                img = self.font.render(info, True, (0, 0, 0) )
             else:
-                img = self.font.render(info, True, (0, 0, 0))
+                img = self.font.render(info, True, (255,255,255))
             self.screen.blit(img, (15, y_offset))
             y_offset += 20 

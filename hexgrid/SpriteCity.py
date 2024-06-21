@@ -1,4 +1,4 @@
-import pygame, math
+import pygame
 from .bpb import colors
 
 class SpriteCity(pygame.sprite.Sprite):
