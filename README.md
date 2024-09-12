@@ -6,7 +6,7 @@
 ## **Project Description**
 Civ-like hexagonal map game. Objective of the game is to destroy enemy or take all wonders.
 
-![Screenshot](https://cdn.discordapp.com/attachments/697845933093683271/1283761481321808014/image.png?ex=66e42b8c&is=66e2da0c&hm=3540e1ad70a4a681442f3ec7b2f2fe7c7f182d9551ad355fe9e2cf8bdffc2e08&)
+![Screenshot Example](https://cdn.discordapp.com/attachments/697845933093683271/1283761481321808014/image.png?ex=66e42b8c&is=66e2da0c&hm=3540e1ad70a4a681442f3ec7b2f2fe7c7f182d9551ad355fe9e2cf8bdffc2e08&)
 
 ### **Installation**
 1. Install **Python** (version 3.x)
